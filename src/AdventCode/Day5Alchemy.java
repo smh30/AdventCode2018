@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+//Part one:
 //I'm actually really happy at how this one went compared to previous days. Actually thought it through on paper beforehand
 //rather than just typing wildly and hoping something would work (at least, once i happened across the fact there was a
 //spare newline on the input....
@@ -31,8 +33,47 @@ public class Day5Alchemy {
         }
 
         System.out.println(allChars.size());
+        System.out.println("---------------------");
+
+        partTwo();
 
     }
+
+    public void partTwo(){
+        List<Integer> polymerSizes = new ArrayList<Integer>();
+
+        for (char a = 'a'; a <= 'z'; a++){
+            allChars.clear();
+            getInput();
+
+            allChars.removeAll(Collections.singleton(a));
+            allChars.removeAll(Collections.singleton((char)(a-32)));
+            //System.out.println(allChars.size());
+
+            //System.out.println(allChars);
+            boolean done = false;
+            while (!done) {
+
+                indicesToDelete.clear();
+                findReactions();
+
+                doDelete();
+
+                if (indicesToDelete.size()==0){
+                    done = true;
+                }
+            }
+
+            polymerSizes.add(allChars.size());
+
+            System.out.println(allChars.size());
+
+        }
+
+
+
+    }
+
 
     public void doDelete(){
         for (int i = allChars.size()-1; i >= 0; i--) {
