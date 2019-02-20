@@ -12,6 +12,10 @@ import java.util.List;
 //rather than just typing wildly and hoping something would work (at least, once i happened across the fact there was a
 //spare newline on the input....
 
+//Part two:
+//Okay, so I got too lazy to get it to spit out the minimum size, since it was obvious just by looking at the numbers
+//and there's some copy-pasted code...
+
 public class Day5Alchemy {
     List<Character> allChars = new ArrayList<Character>();
     List<Integer> indicesToDelete = new ArrayList<>();
@@ -22,10 +26,7 @@ public class Day5Alchemy {
         boolean done = false;
         while (!done) {
 
-            indicesToDelete.clear();
-            findReactions();
-
-            doDelete();
+           process();
 
             if (indicesToDelete.size()==0){
                 done = true;
@@ -53,11 +54,7 @@ public class Day5Alchemy {
             //System.out.println(allChars);
             boolean done = false;
             while (!done) {
-
-                indicesToDelete.clear();
-                findReactions();
-
-                doDelete();
+                process();
 
                 if (indicesToDelete.size()==0){
                     done = true;
@@ -70,6 +67,15 @@ public class Day5Alchemy {
 
         }
 
+
+
+    }
+
+    public void process() {
+        indicesToDelete.clear();
+        findReactions();
+
+        doDelete();
 
 
     }

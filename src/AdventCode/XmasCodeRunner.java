@@ -9,8 +9,9 @@ public class XmasCodeRunner {
     public void start() {
         //Day1FinalFrequency f = new Day1FinalFrequency();
        // f.freq(0);
-        Day4GuardsGuards b = new Day4GuardsGuards();
+        Day7TimeTaken b = new Day7TimeTaken();
         b.start();
+        
 
     }
 }

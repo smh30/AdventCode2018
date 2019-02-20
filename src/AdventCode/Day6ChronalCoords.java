@@ -15,10 +15,36 @@ public class Day6ChronalCoords {
     int smallestX = 1000;
     int smallestY = 1000;
     Set<Point> containsEdge = new HashSet<Point>();
+    int regionSize = 0;
 
 
     public void start(){
-        partOne();
+        //partOne();
+        partTwo();
+
+    }
+
+    public void partTwo(){
+        getInput();
+
+        findBorders();
+
+        for (int x = 0; x < largestX; x++){
+            for(int y = 0; y < largestY; y++){
+                addDiffs(x, y);
+            }
+        }
+        System.out.println(regionSize);
+    }
+
+    public void addDiffs(int x, int y){
+        int total =0;
+        for(Point key : mainPoints.keySet()){
+            total += Math.abs(x - (int)key.getX())+(Math.abs(y - (int)key.getY()));
+        }
+        if (total < 10000){
+            regionSize++;
+        }
 
     }
 
