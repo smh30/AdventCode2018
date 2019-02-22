@@ -36,27 +36,17 @@ public class Day7TimeTaken {
         while (todo != 0) {
             //if any takse have just finished, remove thier prereq
             if (!wip.isEmpty()) {
-               // System.out.println("there is wip");
                 for (String job : wip) {
-                  //  System.out.println("current wip to deal with;" + job + " time: " +
-                    // currentTime);
                     int finish = Integer.parseInt(job.substring(1));
                     if (finish <= currentTime) {
-                      //  System.out.println("removing dones: " + job);
                         correctOrder += job.charAt(0);
-                        //System.out.println(correctOrder);
                         todo--;
                         fin.add(job);
                         
                         //then the job is done
                         for (List<String> prereqs : steps.values()) {
-                           // System.out.println("in the prereq loop" + prereqs);
-                         //   System.out.println("looking to remove " +job.charAt(0));
                             if (prereqs != null && prereqs.contains(""+job.charAt(0))) {
-                             //   System.out.println("rmoviiiie");
                                 prereqs.remove(""+job.charAt(0));
-                                
-                                
                                 
                             }
                         }
@@ -74,12 +64,9 @@ public class Day7TimeTaken {
                         if (steps.get(step) == null || steps.get(step).size() == 0) {
                             steps.put(step, done);
                             wip.add(step + (currentTime+stepTime(step)));
-                          //  System.out.println("worker " +i+ " is working on " +step);
-                          //  System.out.println("wip: " + wip);
                             
                             workerTimes[i] = currentTime+stepTime(step);
                             break;
-                            //System.out.println(workerTimes[i] + step);
                         }
                     }
                 }

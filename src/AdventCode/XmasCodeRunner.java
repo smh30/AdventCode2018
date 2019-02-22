@@ -9,7 +9,7 @@ public class XmasCodeRunner {
     public void start() {
         //Day1FinalFrequency f = new Day1FinalFrequency();
        // f.freq(0);
-        Day7TimeTaken b = new Day7TimeTaken();
+        Day8Tree b = new Day8Tree();
         b.start();
         
 
