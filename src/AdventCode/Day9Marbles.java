@@ -3,104 +3,171 @@ package AdventCode;
 //credit to https://stackoverflow.com/questions/29803724/circular-linkedlist-in-java
 //I've never attempted a linked list before
 
+import java.util.ArrayList;
+import java.util.List;
+
+@SuppressWarnings("Duplicates")
 public class Day9Marbles {
     public static void main(String[] args) {
         Day9Marbles game = new Day9Marbles();
-        int winningScore = game.playMarbles(9, 25);
+        //long winningScore = game.playMarbles(411, 7205900);
+        long winningScore = game.playMarbles(21, 6111);
+        System.out.println("The winning score is: " + winningScore);
         
     }
     
-    public int playMarbles(int players, int marbles){
-        int winningScore = 0;
-        
-        //each player has a score (player objeects? or just a list?)
-        
-        //first marble value = 0. up to given int
-        //normal play:
-        //place next between 1&2 clockwise oof current (most recent placed)
-        
-        //if marble is multtiple of 23:
-          //add that number to thee player's score
-          //remove marble 7 spaces anticlockwisee and add to scoore
-        //now the cloockwis of removed will become current
+    List<Player> players;
     
-        //game eends when all marbles are consumed
+    public long playMarbles(int numplayers, int marbles) {
+        long winningScore = 0;
+        MarbleCircleList gameCircle = new MarbleCircleList();
         
+        //each player has a score, saved as a Player
+        players = new ArrayList<Player>();
+        for (int i = 0; i < numplayers; i++) {
+            Player player = new Player("player" + (i + 1));
+            players.add(player);
+        }
         
+        //the first marble is inserted before starting
+        gameCircle.insert(0);
+        
+        for (int i = 1; i <= marbles; i++) {
+            //which player's turn is it?
+            int currentTurn = (i-1)%numplayers;
+           // System.out.println("current player " + players.get(currentTurn).name);
+            
+            
+            //if marble is multiple of 23:
+            
+             if (i % 23 == 0) {
+                
+                long currentScore = players.get(currentTurn).getScore();
+                int removedMarble = gameCircle.remove();
+                
+                long updatedScore = currentScore + i + removedMarble;
+                
+                players.get(currentTurn).setScore(updatedScore);
+                
+            } else {
+                
+                gameCircle.insert(i);
+//
+            }
+        }
+        
+        winningScore = 0;
+        for (Player player : players) {
+            if (player.getScore()>winningScore){
+                winningScore = player.getScore();
+                System.out.println("winner is: " +player.name + " score: " + winningScore);
+            }
+        }
         // after the game, see what player has the highest score and retturn it
         return winningScore;
     }
     
-    public class Marble{
+    public class Marble {
         public int value;
         private Marble next;
         private Marble previous;
         
-        public Marble(int value){
+        public Marble(int value) {
             this.value = value;
         }
-    
+        
         public Marble getNext() {
             return next;
         }
-    
+        
         public void setNext(Marble next) {
             this.next = next;
         }
-    
+        
         public Marble getPrevious() {
             return previous;
         }
-    
+        
         public void setPrevious(Marble previous) {
             this.previous = previous;
         }
     }
     
-    public class MarbleCircleList{
-        private Marble current;
+    public class MarbleCircleList {
+        public Marble current;
         private Marble first;
         
-        public Marble getCurrent(){
-            return current;
-        }
-        
-        public void setCurrent(Marble newCurrent){
-            current = newCurrent;
-        }
-        
-        public void advance(){
+        public void advance() {
             current = current.next;
         }
         
-        public void retreat(){
+        public void retreat() {
             current = current.previous;
         }
         
         //inserts after the current marble
-        public void insert (int value){
+        public void insert(int value) {
             Marble newMarble = new Marble(value);
-            if (first==null){
+            if (value == 0) {
                 first = current = newMarble;
                 newMarble.setNext(newMarble);
                 newMarble.setPrevious(newMarble);
             } else {
+                advance();
                 newMarble.setNext(current.getNext());
-                current.setNext(newMarble);
                 newMarble.setPrevious(current);
+                current.getNext().setPrevious(newMarble);
+                current.setNext(newMarble);
+                
+               // System.out.println("the previous marble: " + newMarble.getPrevious().value);
                 
             }
             current = newMarble;
         }
         
         //removes and closes the space, returns value to be addeed to score
-        public int remove (Marble marble){
-            marble.getPrevious().setNext(marble.getNext());
-            marble.getNext().setPrevious(marble.getPrevious());
+        public int remove() {
+            for (int i = 0; i <= 7 ; i++) {
+//                current = first;
+//                System.out.print(first.value + " ");
+//                for (int j = 0; j <22 ; j++) {
+//                    retreat();
+//                    System.out.print(current.value + " ");
+//                }
+                
+                //System.out.println("current before retreat" + current.value);
+                retreat();
+               // System.out.println("current after retreat" + current.value);
+            }
             
-            current = marble.getNext();
+            current.getPrevious().setNext(current.getNext());
+            current.getNext().setPrevious(current.getPrevious());
             
-            return marble.value;
+            advance();
+            int removedMarble = current.value;
+            advance();
+            System.out.println("removing "+ removedMarble);
+            return removedMarble;
+        }
+
+
+    }
+    
+    public class Player {
+        public String name;
+        private long score;
+        
+        public Player(String name) {
+            this.name = name;
+            score = 0;
+        }
+        
+        public long getScore() {
+            return score;
+        }
+        
+        public void setScore(long score) {
+            this.score = score;
         }
     }
     
